@@ -1,0 +1,51 @@
+img = imread('./mixed_fruit3.tiff');
+hsv = rgb2hsv(img);
+%%
+applemask = (hsv(:,:,1) < 0.04 | hsv(:,:,1) > 0.95) & hsv(:,:,2) > 0.55 & hsv(:,:,3) < 0.5 & hsv(:,:,3) > 0.01;
+applepixels = sum(sum(applemask));
+if applepixels < 20000
+    applemask = imerode(applemask, strel('disk', 3));
+    applemask = imdilate(applemask, strel('disk', 7));
+else
+    applemask = imerode(applemask, strel('disk', 3));
+    applemask = imdilate(applemask, strel('disk', 11));
+    applemask = imerode(applemask, strel('disk', 3));
+end
+
+orangemask = hsv(:,:,1) > 0.05 & hsv(:,:,1) < 0.12 & hsv(:,:,2) > 0.48 & hsv(:,:,3) > 0.50;
+orangepixels = sum(sum(orangemask));
+if orangepixels < 20000
+    orangemask = imerode(orangemask, strel('disk', 3));
+    orangemask = imdilate(orangemask, strel('disk', 7));
+else
+    orangemask = imerode(orangemask, strel('disk', 3));
+    orangemask = imdilate(orangemask, strel('disk', 11));
+    orangemask = imerode(orangemask, strel('disk', 3));
+end
+
+bananamask = hsv(:,:,1) > 0.12 & hsv(:,:,1) < 0.24 & hsv(:,:,2) > 0.4 & hsv(:,:,3) > 0.5 & hsv(:,:,3) < 1; % hsv(:,:,2) < 0.7 & 
+bananapixels = sum(sum(bananamask));
+if bananapixels < 20000
+    bananamask = imerode(bananamask, strel('disk', 3));
+    bananamask = imdilate(bananamask, strel('disk', 15));
+    bananamask = imerode(bananamask, strel('disk', 6));
+else
+    bananamask = imerode(bananamask, strel('disk', 3));
+    bananamask = imdilate(bananamask, strel('disk', 11));
+    bananamask = imerode(bananamask, strel('disk', 3));
+end
+
+%imtool(img);
+%imtool(bananamask);
+%imtool(uint8(bananamask) .* img);
+
+
+connectedApples = bwlabel(applemask, 4);
+appleCount = max(max(connectedApples));
+sizes = [];
+
+for i = 1:appleCount
+    thisApple = connectedApples == i;
+    centroid = regionprops(thisApple, 'centroid');
+    size = sum(sum(thisApple));
+end
