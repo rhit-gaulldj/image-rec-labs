@@ -33,7 +33,7 @@ combinedMask(:,:,3) = 255 * bananamask;
 bananapixels = sum(sum(bananamask));
 if bananapixels < 20000
     bananamask = imerode(bananamask, strel('disk', 3));
-    bananamask = imdilate(bananamask, strel('disk', 15));
+    bananamask = imdilate(bananamask, strel('disk', 9));
     bananamask = imerode(bananamask, strel('disk', 6));
 else
     bananamask = imerode(bananamask, strel('disk', 3));
@@ -41,7 +41,12 @@ else
     bananamask = imerode(bananamask, strel('disk', 3));
 end
 
-imwrite(combinedMask, './combined_mask_pre_morphology3.png');
+%imwrite(combinedMask, './combined_mask_pre_morphology2.png');
+
+combinedMask(:,:,1) = applemask * 255;
+combinedMask(:,:,2) = orangemask * 255;
+combinedMask(:,:,3) = bananamask * 255;
+%imwrite(combinedMask, './combined_mask_post_morphology2.png');
 
 %imtool(img);
 %imtool(bananamask);
@@ -66,11 +71,14 @@ end
 meanAppleSize = mean(appleSizes);
 stdAppleSize = std(appleSizes);
 for i = 1:appleCount
-    if appleSizes(i) < meanAppleSize - stdAppleSize
+    if appleSizes(i) < meanAppleSize - 2 * stdAppleSize
         connectedApples(connectedApples == i) = 0;
         appleSizes(i) = 0;
     end
 end
+appleCount = size(find(appleSizes > 0));
+appleCount = appleCount(1);
+appleCount
 
 %%
 connectedOranges = bwlabel(orangemask, 4);
@@ -90,11 +98,14 @@ end
 meanOrangeSize = mean(orangeSizes);
 stdOrangeSize = std(orangeSizes);
 for i = 1:orangeCount
-    if orangeSizes(i) < meanOrangeSize - stdOrangeSize
+    if orangeSizes(i) < meanOrangeSize - 2.5 * stdOrangeSize
         connectedOranges(connectedOranges == i) = 0;
         orangeSizes(i) = 0;
     end
 end
+orangeCount = size(find(orangeSizes > 0));
+orangeCount = orangeCount(1);
+orangeCount
 
 %%
 connectedBananas = bwlabel(bananamask, 4);
@@ -114,15 +125,22 @@ end
 meanBananaSize = mean(bananaSizes);
 stdBananaSize = std(bananaSizes);
 for i = 1:bananaCount
-    if bananaSizes(i) < meanBananaSize - 0.5 * stdBananaSize
+    if bananaSizes(i) < meanBananaSize - 1 * stdBananaSize
         connectedBananas(connectedBananas == i) = 0;
         bananaSizes(i) = 0;
     end
 end
+bananaCount = size(find(bananaSizes > 0));
+bananaCount = bananaCount(1);
+bananaCount
+
+combinedMask(:,:,1) = connectedApples * 255;
+combinedMask(:,:,2) = connectedOranges * 255;
+combinedMask(:,:,3) = connectedBananas * 255;
 
 figure;
 imshow(img);
 figure;
-imshow(bananamask);
-figure;
-imshow(connectedBananas);
+imshow(combinedMask);
+
+%imwrite(combinedMask, './combined_mask_post_deletion3.png');
