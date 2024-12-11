@@ -4,7 +4,6 @@ hsv = rgb2hsv(img);
 
 combinedMask = img;
 
-
 applemask = (hsv(:,:,1) < 0.04 | hsv(:,:,1) > 0.95) & hsv(:,:,2) > 0.55 & hsv(:,:,3) < 0.5 & hsv(:,:,3) > 0.01;
 combinedMask(:,:,1) = 255 * applemask;
 applepixels = sum(sum(applemask));
@@ -50,7 +49,6 @@ imwrite(combinedMask, './combined_mask_pre_morphology3.png');
 
 %%
 
-
 connectedApples = bwlabel(applemask, 4);
 appleCount = max(max(connectedApples));
 appleSizes = zeros(appleCount, 1);
@@ -74,6 +72,7 @@ for i = 1:appleCount
     end
 end
 
+%%
 connectedOranges = bwlabel(orangemask, 4);
 orangeCount = max(max(connectedOranges));
 orangeSizes = zeros(orangeCount, 1);
@@ -97,6 +96,7 @@ for i = 1:orangeCount
     end
 end
 
+%%
 connectedBananas = bwlabel(bananamask, 4);
 bananaCount = max(max(connectedBananas));
 bananaSizes = zeros(bananaCount, 1);
