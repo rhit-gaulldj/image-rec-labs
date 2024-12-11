@@ -151,9 +151,55 @@ for i = 1:bananaCount
     end
 end
 
-% figure;
-% imshow(img);
+figure;
+imshow(img);
 % figure;
 % imshow(bananamask);
 % figure;
 % imshow(connectedBananas);
+
+%% Mark Centroids on Original Image
+markedImg = hsv;
+
+% Mark apple centroids
+for i = 1:appleCount
+    if appleSizes(i) > 0 
+        x = round(appleXs(i));
+        y = round(appleYs(i));
+        % Draw 3x3 square in HSV
+        markedImg(y-1:y+1, x-1:x+1, 1) = 1;   % Hue (cyan)
+        markedImg(y-1:y+1, x-1:x+1, 2) = 1;   % Saturation
+        markedImg(y-1:y+1, x-1:x+1, 3) = 1;   % Value (brightness)
+    end
+end
+
+% Mark orange centroids
+for i = 1:orangeCount
+    if orangeSizes(i) > 0 
+        x = round(orangeXs(i));
+        y = round(orangeYs(i));
+        % Draw 3x3 square in HSV
+        markedImg(y-1:y+1, x-1:x+1, 1) = 1; % Hue 
+        markedImg(y-1:y+1, x-1:x+1, 2) = 1;    % Saturation
+        markedImg(y-1:y+1, x-1:x+1, 3) = 1;    % Value (brightness)
+    end
+end
+
+% Mark banana centroids
+for i = 1:bananaCount
+    if bananaSizes(i) > 0  
+        x = round(bananaXs(i));
+        y = round(bananaYs(i));
+        % Draw 3x3 square in HSV
+        markedImg(y-1:y+1, x-1:x+1, 1) = 1;    % Hue 
+        markedImg(y-1:y+1, x-1:x+1, 2) = 1;    % Saturation
+        markedImg(y-1:y+1, x-1:x+1, 3) = 1;    % Value (brightness)
+    end
+end
+
+% Display the marked image
+figure;
+imshow(hsv2rgb(markedImg));
+
+% Save the marked image
+imwrite(markedImg, './marked_centroids.png');
