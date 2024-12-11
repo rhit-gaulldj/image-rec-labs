@@ -1,7 +1,12 @@
 img = imread('./mixed_fruit3.tiff');
 hsv = rgb2hsv(img);
 %%
+
+combinedMask = img;
+
+
 applemask = (hsv(:,:,1) < 0.04 | hsv(:,:,1) > 0.95) & hsv(:,:,2) > 0.55 & hsv(:,:,3) < 0.5 & hsv(:,:,3) > 0.01;
+combinedMask(:,:,1) = 255 * applemask;
 applepixels = sum(sum(applemask));
 if applepixels < 20000
     applemask = imerode(applemask, strel('disk', 3));
@@ -13,6 +18,7 @@ else
 end
 
 orangemask = hsv(:,:,1) > 0.05 & hsv(:,:,1) < 0.12 & hsv(:,:,2) > 0.48 & hsv(:,:,3) > 0.50;
+combinedMask(:,:,2) = 255 * orangemask;
 orangepixels = sum(sum(orangemask));
 if orangepixels < 20000
     orangemask = imerode(orangemask, strel('disk', 3));
@@ -24,6 +30,7 @@ else
 end
 
 bananamask = hsv(:,:,1) > 0.12 & hsv(:,:,1) < 0.24 & hsv(:,:,2) > 0.4 & hsv(:,:,3) > 0.5 & hsv(:,:,3) < 1; % hsv(:,:,2) < 0.7 & 
+combinedMask(:,:,3) = 255 * bananamask;
 bananapixels = sum(sum(bananamask));
 if bananapixels < 20000
     bananamask = imerode(bananamask, strel('disk', 3));
@@ -35,9 +42,13 @@ else
     bananamask = imerode(bananamask, strel('disk', 3));
 end
 
+imwrite(combinedMask, './combined_mask_pre_morphology3.png');
+
 %imtool(img);
 %imtool(bananamask);
 %imtool(uint8(bananamask) .* img);
+
+%%
 
 
 connectedApples = bwlabel(applemask, 4);
