@@ -4,15 +4,14 @@
 %   PROGRAM DESCRIPTION
 %   see Fruit Finder project description
 %
-%   Output: combined mask to detect oranges, apples, and bananas on
-%   couches
+%   Output: 
 %
 %   Written by Daniel Gaull & Maria D. Beloreshka
 %   Date: 12/10/24
 %**************************************************************************
  
 % load image
-img = imread('./mixed_fruit3.tiff');
+img = imread('./fruit_tray.tiff');
 % convert image to hsv from rgb
 hsv = rgb2hsv(img);
 % figure;
@@ -70,13 +69,12 @@ else
     bananamask = imerode(bananamask, strel('disk', 3));
 end
 
-%imwrite(combinedMask, './combined_mask_pre_morphology3.png');
+imwrite(combinedMask, './combined_mask_pre_morphology_fruit_tray.png');
 
 combinedMask(:,:,1) = applemask * 255;
 combinedMask(:,:,2) = orangemask * 255;
 combinedMask(:,:,3) = bananamask * 255;
-%imwrite(combinedMask, './combined_mask_post_morphology2.png'); % saving
-%the mask
+imwrite(combinedMask, './combined_mask_post_morphology_fruit_tray.png'); % saving the mask
 
 
 %% Number of Apples and Their Individual Statistics
@@ -106,7 +104,6 @@ for i = 1:appleCount
 end
 appleCount = size(find(appleSizes > 0));
 appleCount = appleCount(1);
-appleCount
 
 %% Number of Oranges and Their Individual Statistics
 connectedOranges = bwlabel(orangemask, 4);
@@ -135,7 +132,6 @@ for i = 1:orangeCount
 end
 orangeCount = size(find(orangeSizes > 0));
 orangeCount = orangeCount(1);
-orangeCount
 
 %% Number of Bananas and Their Individual Statistics
 connectedBananas = bwlabel(bananamask, 4);
@@ -164,21 +160,16 @@ for i = 1:bananaCount
 end
 bananaCount = size(find(bananaSizes > 0));
 bananaCount = bananaCount(1);
-bananaCount
 
 combinedMask(:,:,1) = connectedApples * 255;
 combinedMask(:,:,2) = connectedOranges * 255;
 combinedMask(:,:,3) = connectedBananas * 255;
 
 figure;
-imshow(img);
-% figure;
-% imshow(bananamask);
-% figure;
-% imshow(connectedBananas);
+imshow(combinedMask);
 
 %% Mark Centroids on Original Image
-markedImg = hsv;
+markedImg = combinedMask;
 
 % Mark apple centroids
 for i = 1:appleCount
@@ -186,9 +177,9 @@ for i = 1:appleCount
         x = round(appleXs(i));
         y = round(appleYs(i));
         % Draw 3x3 square in HSV
-        markedImg(y-1:y+1, x-1:x+1, 1) = 1;   % Hue (cyan)
-        markedImg(y-1:y+1, x-1:x+1, 2) = 1;   % Saturation
-        markedImg(y-1:y+1, x-1:x+1, 3) = 1;   % Value (brightness)
+        combinedMask(y-1:y+1, x-1:x+1, 1) = 255;   
+        combinedMask(y-1:y+1, x-1:x+1, 2) = 255;   
+        combinedMask(y-1:y+1, x-1:x+1, 3) = 255;   
     end
 end
 
@@ -198,9 +189,9 @@ for i = 1:orangeCount
         x = round(orangeXs(i));
         y = round(orangeYs(i));
         % Draw 3x3 square in HSV
-        markedImg(y-1:y+1, x-1:x+1, 1) = 1; % Hue 
-        markedImg(y-1:y+1, x-1:x+1, 2) = 1;    % Saturation
-        markedImg(y-1:y+1, x-1:x+1, 3) = 1;    % Value (brightness)
+        combinedMask(y-1:y+1, x-1:x+1, 1) = 255;   
+        combinedMask(y-1:y+1, x-1:x+1, 2) = 255;   
+        combinedMask(y-1:y+1, x-1:x+1, 3) = 255;
     end
 end
 
@@ -210,18 +201,15 @@ for i = 1:bananaCount
         x = round(bananaXs(i));
         y = round(bananaYs(i));
         % Draw 3x3 square in HSV
-        markedImg(y-1:y+1, x-1:x+1, 1) = 1;    % Hue 
-        markedImg(y-1:y+1, x-1:x+1, 2) = 1;    % Saturation
-        markedImg(y-1:y+1, x-1:x+1, 3) = 1;    % Value (brightness)
+        combinedMask(y-1:y+1, x-1:x+1, 1) = 255;   
+        combinedMask(y-1:y+1, x-1:x+1, 2) = 255;   
+        combinedMask(y-1:y+1, x-1:x+1, 3) = 255;
     end
 end
 
 % Display the marked image
 figure;
-%imshow(combinedMask);
-
-%imwrite(combinedMask, './combined_mask_post_deletion3.png');
-imshow(hsv2rgb(markedImg));
+imshow(markedImg);
 
 % Save the marked image
-imwrite(markedImg, './marked_centroids.png');
+imwrite(markedImg, './marked_centroids_fruit_tray.png');
