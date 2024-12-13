@@ -76,7 +76,6 @@ combinedMask(:,:,2) = orangemask * 255;
 combinedMask(:,:,3) = bananamask * 255;
 imwrite(combinedMask, './combined_mask_post_morphology_fruit_tray.png'); % saving the mask
 
-
 %% Number of Apples and Their Individual Statistics
 connectedApples = bwlabel(applemask, 4);
 appleCount = max(max(connectedApples));
