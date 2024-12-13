@@ -1,0 +1,10 @@
+function [horizontal_edge, vertical_edge, sum, mag, direction, direction_strong] = sobel(img)
+
+horizontal_filter =
+vertical_filter = 
+horizontal_edge = ;
+vertical_edge = ;
+sum = horizontal_edge + vertical_edge;
+mag = sqrt(horizontal_edge.^2 + vertical_edge.^2);
+direction = atan2(horizontal_edge, vertical_edge);
+direction_strong = direction();
