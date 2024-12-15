@@ -7,5 +7,5 @@ vertical_edge = filter2(vertical_filter, img);
 sum = horizontal_edge + vertical_edge;
 mag = sqrt(horizontal_edge.^2 + vertical_edge.^2);
 direction = atan2(horizontal_edge, vertical_edge);
-dummy = direction;
-direction_strong 
+direction_strong = direction;
+direction_strong(mag < 0) = 0;
