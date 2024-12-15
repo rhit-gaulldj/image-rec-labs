@@ -34,7 +34,6 @@ approx_filtered = imfilter(grayImg, gfilter);
 figure;
 imshow(approx_filtered);
 
-gfiltered = imfilter(grayImg, gfilter);
 uniform_filtered = imfilter(grayImg, [1 1 1; 1 1 1; 1 1 1]/9);
 
 [horizontal_edge, vertical_edge, sum, mag, direction, direction_strong] = sobel(grayImg);
@@ -49,7 +48,7 @@ subplot(2,4,5); imshow(mag); title('Magnitude')
 subplot(2,4,6); imshow(direction); title('Direction')
 subplot(2,4,7); imshow(direction_strong); title('Direction Strong')
 
-[horizontal_edge, vertical_edge, sum, mag, direction, direction_strong] = sobel(gfiltered);
+[horizontal_edge, vertical_edge, sum, mag, direction, direction_strong] = sobel(approx_filtered);
 
 figure;
 sgtitle('Approximate Gaussian Filter');
