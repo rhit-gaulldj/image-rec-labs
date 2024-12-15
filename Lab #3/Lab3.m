@@ -18,8 +18,7 @@ grayImg = rgb2gray(img);
 
 filt = ones(3,3)/9; % equivalent to [1/9 1/9 1/9;  1/9 1/9 1/9; 1/9 1/9 1/9]
 smoothImg = filter2(filt, grayImg); % applies the filter
-figure;
-imshow(smoothImg);
+%imshow(smoothImg);
 
 gfilter = [1 4 6 4 1; 4 16 24 16 4;6 24 36 24 6; 4 16 24 16 4; 1 4 6 4 1]/256;
 %figure;
@@ -34,3 +33,6 @@ imshow(true_filtered);
 approx_filtered = imfilter(grayImg, gfilter);
 figure;
 imshow(approx_filtered);
+
+[horizontal_edge, vertical_edge, sum, mag, direction, direction_strong] = sobel(grayImg);
+
