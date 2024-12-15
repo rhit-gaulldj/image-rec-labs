@@ -36,3 +36,12 @@ imshow(approx_filtered);
 
 [horizontal_edge, vertical_edge, sum, mag, direction, direction_strong] = sobel(grayImg);
 
+figure;
+subplot(2,4,1); imshow(img); title('Original')
+subplot(2,4,2); imshow(horizontal_edge); title('Horizontal Filter')
+subplot(2,4,3); imshow(vertical_edge); title('Vertical Filter')
+subplot(2,4,4); imshow(sum); title('Sum')
+subplot(2,4,5); imshow(mag); title('Magnitude')
+subplot(2,4,6); imshow(direction); title('Direction')
+subplot(2,4,7); imshow(direction_strong); title('Direction Strong')
+

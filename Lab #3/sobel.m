@@ -8,4 +8,4 @@ sum = horizontal_edge + vertical_edge;
 mag = sqrt(horizontal_edge.^2 + vertical_edge.^2);
 direction = atan2(horizontal_edge, vertical_edge);
 dummy = direction;
-direction_strong = dummy(direction < 0);
+direction_strong 
