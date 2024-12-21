@@ -21,14 +21,19 @@ elongationImg = zeros(size(img));
 circularityImg = zeros(size(img));
 
 figure;
-subplot(1, 2, 1);
+subplot(2, 2, 1);
 imshow(img);
 title('Elongation');
 hold on;
 
-subplot(1, 2, 2);
+subplot(2, 2, 2);
 imshow(img);
 title('Circularity');
+hold on;
+
+subplot(2, 2, 3);
+imshow(img);
+title('Classification');
 hold on;
 
 for i = 1:numShapes
@@ -48,25 +53,52 @@ for i = 1:numShapes
     elongation = sqrt(max(eigenvalues) / min(eigenvalues));
 
     % circularity
-    perimeter = nnz(bwperim(shapes == i, 8));
+    %perimeter = nnz(bwperim(shapes == i, 8));
+    perimeterSet = bwtraceboundary(shapes == i, [r(1), c(1)], "S");
+    perimeter = 0;
+    for j = 2:length(perimeterSet)
+        cr = perimeterSet(j,1);
+        cc = perimeterSet(j,2);
+        pr = perimeterSet(j-1,1);
+        pc = perimeterSet(j-1,2);
+        if cr == pr || cc == pc
+            perimeter = perimeter + 1;
+        else
+            perimeter = perimeter + sqrt(2);
+        end
+    end
     area = sum(shapes(:) == i);
     circularity = (4 * pi * area) / (perimeter^2);
 
-    if circularity && elongation > 0
-        
+    if elongation > 0 && elongation < 1.03
+        if circularity > 0.85
+            classification = 'circle';
+        else
+            classification = 'square';
+        end
+    else
+        if circularity > 0.76
+            classification = 'ellipse';
+        else
+            classification = 'rectangle';
+        end
     end
 
     % elongation value to the elongation image
     elongationImg(r, c) = elongation;
-    subplot(1, 2, 1);
+    subplot(2, 2, 1);
     text(mean(c), mean(r), sprintf('%.2f', elongation), 'Color', 'r', 'FontSize', 10, 'HorizontalAlignment', 'center');
 
     % circularity value to the circularity image
     circularityImg(r, c) = circularity;
-    subplot(1, 2, 2);
+    subplot(2, 2, 2);
     text(mean(c), mean(r), sprintf('%.2f', circularity), 'Color', 'g', 'FontSize', 10, 'HorizontalAlignment', 'center');
 
-    fprintf('Shape %d: Elongation = %.2f, Circularity = %.2f, Classification = %.2f\n', i, elongation, circularity, classification);
+    % classification value to the classification image
+    subplot(2, 2, 3);
+    text(mean(c), mean(r), sprintf('%s', classification), 'Color', 'b', 'FontSize', 10, 'HorizontalAlignment', 'center');
+
+    %fprintf('Shape %d: Elongation = %.2f, Circularity = %.2f, Classification = %.2f\n', i, elongation, circularity, classification);
 end
 
 hold off;
