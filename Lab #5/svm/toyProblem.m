@@ -1,5 +1,6 @@
 % toyProblem.m
 % Written by Matthew Boutell, updated Jan 2020.
+% Added onto by Daniel Gaull and Maria Beloreshka Jan 2025
 % Feel free to distribute at will.
 clear all;
 % We fix the seeds so the data sets are reproducible
