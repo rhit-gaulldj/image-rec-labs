@@ -11,7 +11,7 @@ seedTest = 137;
 
 % Add your SVM code here.
 model = fitcsvm(xTrain,yTrain,'KernelFunction','RBF', 'Standardize',false, ...
-    'ClassNames',[-1, 1], 'BoxConstraint',10,'KernelScale',20);
+    'ClassNames',[-1, 1], 'BoxConstraint',10,'KernelScale',12);
 [detectedClasses, distances] = predict(model, xTest);
 ysz = size(yTest);
 accuracy = sum(yTest == detectedClasses) / ysz(1) * 100;
