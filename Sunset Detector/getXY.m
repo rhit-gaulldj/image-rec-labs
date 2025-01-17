@@ -14,11 +14,11 @@ sunsetFeatures = imageDatastoreReader(sunsetStore);
 nonsunsetFeatures = imageDatastoreReader(nonsunsetStore);
 
 X = zeros(nImages, 294);
-y = zeros(nImages);
+y = zeros(nImages, 1);
 X(1:nSunsetImages, :) = sunsetFeatures;
 X(nSunsetImages + 1:end, :) = nonsunsetFeatures;
 
-y(1:nSunsetImages) = 1;
-y(nSunsetImages + 1:end) = -1;
+y(1:nSunsetImages, :) = 1;
+y(nSunsetImages + 1:end, :) = -1;
 
 end

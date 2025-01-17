@@ -1,4 +1,4 @@
-function featureVector = featureExtract(image)
+function featureVector = featureExtract(image, numBlocks)
     % convert to double
     image = double(image);
 
@@ -15,7 +15,6 @@ function featureVector = featureExtract(image)
     [height, width, ~] = size(image);
 
     % grid size
-    numBlocks = 7; 
     blockHeight = round(height / numBlocks);
     blockWidth = round(width / numBlocks);
 
