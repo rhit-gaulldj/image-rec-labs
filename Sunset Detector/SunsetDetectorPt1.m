@@ -9,4 +9,7 @@
 %   Written by Daniel Gaull & Maria D. Beloreshka
 %   Date: 1/16/25
 %**************************************************************************
- 
+
+trainingSet = imageDatastore('images\train');
+
+
