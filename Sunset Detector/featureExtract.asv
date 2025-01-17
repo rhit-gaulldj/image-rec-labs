@@ -1,0 +1,36 @@
+function featureExtract = extractFeatures(image)
+    % convert to double
+    image = double(image);
+
+    % convert to LST space
+    R = image(:, :, 1);
+    G = image(:, :, 2);
+    B = image(:, :, 3);
+    
+    L = R + G + B;           % L channel
+    S = R - B;               % S channel
+    T = R - 2 * G + B;       % T channel
+
+    % dimensions
+    [height, width, ~] = size(image);
+
+
+    % grid size
+    numBlocks = 7; 
+    blockHeight = floor(height / numBlocks);
+    blockWidth = floor(width / numBlocks);
+
+    % initialize the feature vector
+    featureVector = zeros(1, 294); % 7x7x3x2 (grid x channels x stats)
+
+    index = 1;
+    for i=1:numBlocks
+        for j=1:numBlocks
+
+        end 
+    end
+
+
+
+
+
