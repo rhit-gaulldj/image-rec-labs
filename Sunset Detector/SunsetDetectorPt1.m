@@ -10,6 +10,7 @@
 %   Date: 1/16/25
 %**************************************************************************
 
-trainingSet = imageDatastore('images\train');
+trainingSunsets = imageDatastore('images\train\sunset');
+trainingNonsunsets = imageDatastore('images\train\nonsunset');
 
 
