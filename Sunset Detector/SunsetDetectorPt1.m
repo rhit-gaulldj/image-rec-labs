@@ -10,11 +10,13 @@
 %   Date: 1/16/25
 %**************************************************************************
 
-% [Xtrain, ytrain] = getXY('images\train');
-% [Xtest, ytest] = getXY('images\test');
-% [Xvalid, yvalid] = getXY('images\validate');
+% [Xtrain, ytrain, namesTrain] = getXY('images\train');
+% [Xtest, ytest, namesTest] = getXY('images\test');
+% [Xvalid, yvalid, namesValid] = getXY('images\validate');
 % 
-% save('features.mat', 'Xtrain', 'ytrain', 'Xtest', 'ytest', 'Xvalid', 'yvalid');
+% save('features.mat', 'Xtrain', 'ytrain', 'Xtest', 'ytest', 'Xvalid', 'yvalid', ...
+%     'namesTrain', 'namesTest', 'namesValid');
+% fprintf('Done');
 % 
 % load('features.mat');
 % 
@@ -80,6 +82,8 @@
 % BoxConstraint = 2
 % KernelScale = 13
 
+%%
+
 load('features.mat');
 
 % Define the best parameters found
@@ -100,7 +104,16 @@ accuracy = sum(ytest == detectedClasses) / size(ytest, 1) * 100;
 fprintf('Test Accuracy: %f\n', accuracy);
 
 % Predict the scores for the test data
-[~, scores] = predict(model, Xtest); 
+[testClasses, scores] = predict(model, Xtest);
+
+truePositive = find(ytest == testClasses & ytest == 1);
+trueNegative = find(ytest == testClasses & ytest == -1);
+falsePositive = find(ytest ~= testClasses & ytest == 1);
+falseNegative = find(ytest ~= testClasses & ytest == -1);
+saveScoreImages(truePositive, scores, namesTest, 'tp');
+saveScoreImages(trueNegative, scores, namesTest, 'tn');
+saveScoreImages(falsePositive, scores, namesTest, 'fp');
+saveScoreImages(falseNegative, scores, namesTest, 'fn');
 
 % Extract the positive class scores
 positiveScores = scores(:, 2);
