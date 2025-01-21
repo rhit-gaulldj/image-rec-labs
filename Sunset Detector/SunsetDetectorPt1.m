@@ -106,10 +106,10 @@ fprintf('Test Accuracy: %f\n', accuracy);
 % Predict the scores for the test data
 [testClasses, scores] = predict(model, Xtest);
 
-truePositive = find(ytest == testClasses & ytest == 1);
-trueNegative = find(ytest == testClasses & ytest == -1);
-falsePositive = find(ytest ~= testClasses & ytest == 1);
-falseNegative = find(ytest ~= testClasses & ytest == -1);
+truePositive = find(ytest == testClasses & testClasses == 1);
+trueNegative = find(ytest == testClasses & testClasses == -1);
+falsePositive = find(ytest ~= testClasses & testClasses == 1);
+falseNegative = find(ytest ~= testClasses & testClasses == -1);
 saveScoreImages(truePositive, scores, namesTest, 'tp');
 saveScoreImages(trueNegative, scores, namesTest, 'tn');
 saveScoreImages(falsePositive, scores, namesTest, 'fp');
