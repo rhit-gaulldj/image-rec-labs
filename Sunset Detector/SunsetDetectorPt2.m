@@ -9,3 +9,26 @@
 %   Written by Daniel Gaull & Maria D. Beloreshka
 %   Date: 01/23/25
 %**************************************************************************
+
+dsTrain = readDatastore('images/train');
+dsValidation = readDatastore('images/validate');
+dsTest = readDatastore('images/test');
+
+net = imagePretrainedNetwork("vgg16", NumClasses=2);
+% analyzeNetwork(net);
+layerNames = {'fc6' 'fc7' 'fc8'};
+net = freezeNetwork(net,LayerNamesToIgnore=layerNames);
+
+options = trainingOptions("adam", ...
+    ValidationData=dsValidation, ...
+    ValidationFrequency=5, ...
+    Plots="training-progress", ...
+    Metrics="accuracy", ...
+    Verbose=true, ...
+    MiniBatchSize=64, ...
+    MaxEpochs=20);
+
+fprintf('Starting training...\n');
+
+net = trainnet(dsTrain,net, "crossentropy", options);
+save('model.mat', 'net');

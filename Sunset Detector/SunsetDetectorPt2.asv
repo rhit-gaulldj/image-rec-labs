@@ -1,0 +1,16 @@
+%**************************************************************************
+% SunsetDetectorPt2.m
+%
+%   PROGRAM DESCRIPTION
+%   see Sunset Detector Pt. 2 project description
+%
+%   Output: 
+%
+%   Written by Daniel Gaull & Maria D. Beloreshka
+%   Date: 01/23/25
+%**************************************************************************
+
+net = imagePretrainedNetwork("vgg16", NumClasses=2);
+[layerName] = networkHead(net);
+net = freezeNetwork(net,LayerNamesToIgnore=layerName);
+analyzeNetwork(net);
