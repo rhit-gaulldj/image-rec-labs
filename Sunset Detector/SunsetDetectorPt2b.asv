@@ -1,0 +1,24 @@
+%**************************************************************************
+% SunsetDetectorPt2b.m
+%
+%   PROGRAM DESCRIPTION
+%   see Sunset Detector Pt. 2b project description
+%
+%   Output: 
+%
+%   Written by Daniel Gaull & Maria D. Beloreshka
+%   Date: 01/25/25
+%**************************************************************************
+
+dsTrain = readDatastore('images/train');
+dsValidation = readDatastore('images/validate');
+dsTest = readDatastore('images/test');
+
+net = alexnet;
+
+layer = 'fc7';
+featuresTrain = activations(net,dsTrain,layer,'OutputAs','rows');
+featuresValidation = activations(net,dsValidation,layer,'OutputAs','rows');
+featuresTest = activations(net,dsTest,layer,'OutputAs','rows');
+save('features2.mat', 'featuresTrain', 'featuresValidation', 'featuresTest');
+fprintf('Done');D
