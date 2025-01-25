@@ -14,9 +14,9 @@ dsTrain = readDatastore('images/train');
 dsValidation = readDatastore('images/validate');
 dsTest = readDatastore('images/test');
 
-net = imagePretrainedNetwork("vgg16", NumClasses=2);
-% analyzeNetwork(net);
-layerNames = {'fc6' 'fc7' 'fc8'};
+net = imagePretrainedNetwork("googlenet", NumClasses=2);
+%analyzeNetwork(net);
+layerNames = {'loss3-classifier'};
 net = freezeNetwork(net,LayerNamesToIgnore=layerNames);
 
 options = trainingOptions("adam", ...
@@ -26,7 +26,7 @@ options = trainingOptions("adam", ...
     Metrics="accuracy", ...
     Verbose=true, ...
     MiniBatchSize=64, ...
-    MaxEpochs=20);
+    MaxEpochs=30);
 
 fprintf('Starting training...\n');
 
