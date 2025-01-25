@@ -2,7 +2,8 @@
 % SunsetDetectorPt2b.m
 %
 %   PROGRAM DESCRIPTION
-%   see Sunset Detector Pt. 2b project description
+%   Feature extraction method to be fed into SVM for Sunset Detector Pt. 2
+%   Project using AlexNet.
 %
 %   Output: 
 %
