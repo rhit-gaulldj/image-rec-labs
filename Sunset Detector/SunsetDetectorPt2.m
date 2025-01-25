@@ -2,7 +2,7 @@
 % SunsetDetectorPt2.m
 %
 %   PROGRAM DESCRIPTION
-%   see Sunset Detector Pt. 2 project description
+%   Transfer learning method for Sunset Detector Pt. 2 Project
 %
 %   Output: 
 %
@@ -14,8 +14,8 @@ dsTrain = readDatastore('images/train');
 dsValidation = readDatastore('images/validate');
 dsTest = readDatastore('images/test');
 
-% net = imagePretrainedNetwork("googlenet", NumClasses=2);
-% %analyzeNetwork(net);
+net = imagePretrainedNetwork("googlenet", NumClasses=2);
+%analyzeNetwork(net);
 % layerNames = {'loss3-classifier'};
 % net = freezeNetwork(net,LayerNamesToIgnore=layerNames);
 % 
@@ -29,10 +29,13 @@ dsTest = readDatastore('images/test');
 %     MaxEpochs=30);
 % 
 % fprintf('Starting training...\n');
-% 
+
 % net = trainnet(dsTrain,net, "crossentropy", options);
 % save('model.mat', 'net');
+% 
+% load('model.mat');
 
-load('model.mat');
+saveToStruct(net,  'net.mat');
 
+Y = classify(netSaved, dsTest);
 
