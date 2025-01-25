@@ -51,3 +51,5 @@ for i=1:length(C)
     end
     fprintf("Finished C %d\n", i);
 end
+
+save('datagridpt2.mat', 'datagrid');
