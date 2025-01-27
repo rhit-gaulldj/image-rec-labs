@@ -10,12 +10,12 @@
 %   Date: 01/23/25
 %**************************************************************************
 
-dsTrain = readDatastore('images/train');
-dsValidation = readDatastore('images/validate');
-dsTest = readDatastore('images/test');
-
-net = imagePretrainedNetwork("googlenet", NumClasses=2);
-%analyzeNetwork(net);
+% dsTrain = readDatastore('images/train');
+% dsValidation = readDatastore('images/validate');
+% dsTest = readDatastore('images/test');
+% 
+% net = imagePretrainedNetwork("googlenet", NumClasses=2);
+% %analyzeNetwork(net);
 % layerNames = {'loss3-classifier'};
 % net = freezeNetwork(net,LayerNamesToIgnore=layerNames);
 % 
@@ -29,13 +29,24 @@ net = imagePretrainedNetwork("googlenet", NumClasses=2);
 %     MaxEpochs=30);
 % 
 % fprintf('Starting training...\n');
-
-% net = trainnet(dsTrain,net, "crossentropy", options);
-% save('model.mat', 'net');
 % 
-% load('model.mat');
+% net = trainnet(dsTrain, net, "crossentropy", options);
+% 
+% saveToStruct(net, 'net.mat');
+% %load('net.mat');
+% 
+% scores = minibatchpredict(net, dsTest);
+% save('scores.mat', 'scores');
+% 
+% %load('scores.mat');
+% %labels = scores2label(scores, {'sunset', 'nonsunset'});
+% save('labels.mat', 'labels');
+% %load('labels.mat');
+% testAcc = 1 - length(find(dsTest.Labels ~= labels)) / size(labels, 1);
+% fprintf('Test Accuracy: %f%%\n', testAcc * 100);
 
-saveToStruct(net,  'net.mat');
-
-Y = classify(netSaved, dsTest);
-
+%%
+scores = minibatchpredict(net, dsTest);
+labels = scores2label(scores, {'nonsunset', 'sunset'});
+testAcc = 1 - length(find(dsTest.Labels ~= labels)) / size(labels, 1);
+testAcc
