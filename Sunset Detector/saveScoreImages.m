@@ -1,11 +1,12 @@
 function saveScoreImages(indices, scores, names, folder)
 
 myScores = scores(indices, 2);
+myNames = names(indices);
 [minScore, minIndex] = min(myScores);
 [maxScore, maxIndex] = max(myScores);
 
-minImg = imread(names{minIndex});
-maxImg = imread(names{maxIndex});
+minImg = imread(myNames{minIndex});
+maxImg = imread(myNames{maxIndex});
 
 imwrite(minImg, fullfile('output', folder, 'minimg.png'));
 imwrite(maxImg, fullfile('output', folder, 'maximg.png'));
