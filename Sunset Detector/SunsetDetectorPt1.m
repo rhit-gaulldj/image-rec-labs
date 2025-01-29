@@ -10,74 +10,74 @@
 %   Date: 1/16/25
 %**************************************************************************
 
-% [Xtrain, ytrain, namesTrain] = getXY('images\train');
-% [Xtest, ytest, namesTest] = getXY('images\test');
-% [Xvalid, yvalid, namesValid] = getXY('images\validate');
-% 
-% save('features.mat', 'Xtrain', 'ytrain', 'Xtest', 'ytest', 'Xvalid', 'yvalid', ...
-%     'namesTrain', 'namesTest', 'namesValid');
-% fprintf('Done');
-% 
-% load('features.mat');
-% 
-% C = 10.^(-5:1:10);
-% KScale = 10.^(-5:1:10);
-% 
-% datagrid = zeros(length(C) * length(KScale), 3);
-% 
-% index = 1;
-% for i=1:length(C)
-%     for j=1:length(KScale)
-%         c = C(i);
-%         k = KScale(j);
-%         model = fitcsvm(Xtrain,ytrain,'KernelFunction','RBF', 'Standardize',true, ...
-%             'ClassNames',[-1, 1], 'BoxConstraint',c,'KernelScale',k);
-%         [detectedClasses, distances] = predict(model, Xvalid);
-%         accuracy = sum(yvalid == detectedClasses) / size(yvalid, 1) * 100;
-%         datagrid(index, 1) = accuracy;
-%         datagrid(index, 2) = c;
-%         datagrid(index, 3) = k;
-%         index = index + 1;
-%     end
-%     fprintf("Finished C %d\n", i);
-% end
-% 
-% save('datagrid.mat', 'datagrid');
-% 
-% load('datagrid.mat');
-% [maxAccuracy, index] = max(datagrid(:,1));
-% maxAccuracy, index
-% 
-% % "Zoom in" on the hyperparameters
-% 
-% load('features.mat');
-% 
-% C = 1:1:20;
-% KScale = 1:1:20;
-% 
-% datagrid2 = zeros(length(C) * length(KScale), 3);
-% 
-% index = 1;
-% for i=1:length(C)
-%     for j=1:length(KScale)
-%         c = C(i);
-%         k = KScale(j);
-%         model = fitcsvm(Xtrain,ytrain,'KernelFunction','RBF', 'Standardize',true, ...
-%             'ClassNames',[-1, 1], 'BoxConstraint',c,'KernelScale',k);
-%         [detectedClasses, distances] = predict(model, Xvalid);
-%         accuracy = sum(yvalid == detectedClasses) / size(yvalid, 1) * 100;
-%         datagrid2(index, 1) = accuracy;
-%         datagrid2(index, 2) = c;
-%         datagrid2(index, 3) = k;
-%         index = index + 1;
-%     end
-%     fprintf("Finished C %d\n", i);
-% end
-% 
-% save('datagrid2.mat', 'datagrid2');
-% 
-% [maxAccuracy, index] = max(datagrid2(:,1));
-% maxAccuracy, index
+[Xtrain, ytrain, namesTrain] = getXY('images\train');
+[Xtest, ytest, namesTest] = getXY('images\test');
+[Xvalid, yvalid, namesValid] = getXY('images\validate');
+
+save('features.mat', 'Xtrain', 'ytrain', 'Xtest', 'ytest', 'Xvalid', 'yvalid', ...
+    'namesTrain', 'namesTest', 'namesValid');
+fprintf('Done');
+
+load('features.mat');
+
+C = 10.^(-5:1:10);
+KScale = 10.^(-5:1:10);
+
+datagrid = zeros(length(C) * length(KScale), 3);
+
+index = 1;
+for i=1:length(C)
+    for j=1:length(KScale)
+        c = C(i);
+        k = KScale(j);
+        model = fitcsvm(Xtrain,ytrain,'KernelFunction','RBF', 'Standardize',true, ...
+            'ClassNames',[-1, 1], 'BoxConstraint',c,'KernelScale',k);
+        [detectedClasses, distances] = predict(model, Xvalid);
+        accuracy = sum(yvalid == detectedClasses) / size(yvalid, 1) * 100;
+        datagrid(index, 1) = accuracy;
+        datagrid(index, 2) = c;
+        datagrid(index, 3) = k;
+        index = index + 1;
+    end
+    fprintf("Finished C %d\n", i);
+end
+
+save('datagrid.mat', 'datagrid');
+
+load('datagrid.mat');
+[maxAccuracy, index] = max(datagrid(:,1));
+maxAccuracy, index
+
+% "Zoom in" on the hyperparameters
+
+load('features.mat');
+
+C = 1:1:20;
+KScale = 1:1:20;
+
+datagrid2 = zeros(length(C) * length(KScale), 3);
+
+index = 1;
+for i=1:length(C)
+    for j=1:length(KScale)
+        c = C(i);
+        k = KScale(j);
+        model = fitcsvm(Xtrain,ytrain,'KernelFunction','RBF', 'Standardize',true, ...
+            'ClassNames',[-1, 1], 'BoxConstraint',c,'KernelScale',k);
+        [detectedClasses, distances] = predict(model, Xvalid);
+        accuracy = sum(yvalid == detectedClasses) / size(yvalid, 1) * 100;
+        datagrid2(index, 1) = accuracy;
+        datagrid2(index, 2) = c;
+        datagrid2(index, 3) = k;
+        index = index + 1;
+    end
+    fprintf("Finished C %d\n", i);
+end
+
+save('datagrid2.mat', 'datagrid2');
+
+[maxAccuracy, index] = max(datagrid2(:,1));
+maxAccuracy, index
 
 % BoxConstraint = 2
 % KernelScale = 13
