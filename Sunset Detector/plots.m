@@ -1,5 +1,7 @@
 load('datagrid.mat');
+load('datagrid2.mat');
 
+%%
 accs = datagrid(:, 1);
 Cs = datagrid(:, 2);
 Ks = datagrid(:, 3);
@@ -13,9 +15,7 @@ xlabel('Box Constraint (log scale)');
 ylabel('Kernel Scale (log scale)');
 title('Hyperparameter Tuning with Validation Accuracy (Part 1)');
 
-%%%%%%%
-
-load('datagrid2.mat');
+%%%%%%
 
 accs = datagrid2(:, 1);
 Cs = datagrid2(:, 2);
