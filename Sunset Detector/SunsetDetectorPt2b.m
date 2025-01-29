@@ -102,6 +102,7 @@ load('features2.mat');
 ytrain = getY('images\train');
 yvalid = getY('images\validate');
 ytest = getY('images\test');
+namesTest = dsTest.Files;
 
 % Define the best parameters found
 bestC = 90; % Update as per your hyperparameter tuning
@@ -121,16 +122,18 @@ accuracy = sum(ytest == detectedClasses) / size(ytest, 1) * 100;
 fprintf('Test Accuracy: %f\n', accuracy);
 
 % Predict the scores for the test data
+tic
 [testClasses, scores] = predict(model, featuresTest);
+toc
 
-%truePositive = find(ytest == testClasses & testClasses == 1);
-%trueNegative = find(ytest == testClasses & testClasses == -1);
-%falsePositive = find(ytest ~= testClasses & testClasses == 1);
-%falseNegative = find(ytest ~= testClasses & testClasses == -1);
-%saveScoreImages(truePositive, scores, namesTest, 'tp');
-%saveScoreImages(trueNegative, scores, namesTest, 'tn');
-%saveScoreImages(falsePositive, scores, namesTest, 'fp');
-%saveScoreImages(falseNegative, scores, namesTest, 'fn');
+truePositive = find(ytest == testClasses & testClasses == 1);
+trueNegative = find(ytest == testClasses & testClasses == -1);
+falsePositive = find(ytest ~= testClasses & testClasses == 1);
+falseNegative = find(ytest ~= testClasses & testClasses == -1);
+saveScoreImages(truePositive, scores, namesTest, 'nn-tp');
+saveScoreImages(trueNegative, scores, namesTest, 'nn-tn');
+saveScoreImages(falsePositive, scores, namesTest, 'nn-fp');
+saveScoreImages(falseNegative, scores, namesTest, 'nn-fn');
 
 % Extract the positive class scores
 positiveScores = scores(:, 2);

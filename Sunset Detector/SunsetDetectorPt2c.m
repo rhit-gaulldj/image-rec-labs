@@ -107,6 +107,7 @@ load('features2.mat');
 ytrain = getY('images\train');
 yvalid = getY('images\validate');
 ytest = getY('images\test');
+namesTest = dsTest.Files;
 
 % Define the best parameters found
 bestC = 9000; % Update as per your hyperparameter tuning
@@ -126,7 +127,9 @@ accuracy = sum(ytest == detectedClasses) / size(ytest, 1) * 100;
 fprintf('Test Accuracy: %f\n', accuracy);
 
 % Predict the scores for the test data
+tic
 [testClasses, scores] = predict(model, featuresTest);
+toc
 
 %truePositive = find(ytest == testClasses & testClasses == 1);
 %trueNegative = find(ytest == testClasses & testClasses == -1);
