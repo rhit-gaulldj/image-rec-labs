@@ -1,5 +1,5 @@
-load('datagrid.mat');
-load('datagrid2.mat');
+load('datagridpt2c.mat');
+load('datagrid2pt2c.mat');
 
 %%
 accs = datagrid(:, 1);
