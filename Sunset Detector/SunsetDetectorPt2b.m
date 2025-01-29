@@ -15,9 +15,9 @@ dsTrain = readDatastore('images/train');
 dsValidation = readDatastore('images/validate');
 dsTest = readDatastore('images/test');
 
-ytrain = getY('images\train');
-yvalid = getY('images\validate');
-ytest = getY('images\test');
+[ytrain, namesTrain] = getY('images\train');
+[yvalid, namesValid] = getY('images\validate');
+[ytest, namesTest] = getY('images\test');
 
 net = alexnet;
 
@@ -25,11 +25,11 @@ layer = 'fc7';
 featuresTrain = activations(net,dsTrain,layer,'OutputAs','rows');
 featuresValidation = activations(net,dsValidation,layer,'OutputAs','rows');
 featuresTest = activations(net,dsTest,layer,'OutputAs','rows');
-save('features2.mat', 'featuresTrain', 'featuresValidation', 'featuresTest', 'ytrain', 'yvalid', 'ytest');
+save('features2b.mat', 'featuresTrain', 'featuresValidation', 'featuresTest', 'ytrain', 'yvalid', 'ytest');
 
 %%
 
-load('features2.mat');
+load('features2b.mat');
 
 C = 10.^(-5:1:10);
 KScale = 10.^(-5:1:10);
@@ -63,7 +63,7 @@ load('datagridpt2.mat');
 [maxAccuracy, index] = max(datagrid(:,1));
 maxAccuracy, index
 %%
-load('features2.mat');
+load('features2b.mat');
 %C = 100, KScale = 100
 C = 90:110;
 KScale = 90:110;
@@ -98,11 +98,10 @@ load('datagrid2pt2.mat');
 maxAccuracy, index
 
 %%
-load('features2.mat');
-ytrain = getY('images\train');
-yvalid = getY('images\validate');
-ytest = getY('images\test');
-namesTest = dsTest.Files;
+load('features2b.mat');
+[ytrain, namesTrain] = getY('images\train');
+[yvalid, namesValid] = getY('images\validate');
+[ytest, namesTest] = getY('images\test');
 
 % Define the best parameters found
 bestC = 90; % Update as per your hyperparameter tuning
@@ -130,10 +129,10 @@ truePositive = find(ytest == testClasses & testClasses == 1);
 trueNegative = find(ytest == testClasses & testClasses == -1);
 falsePositive = find(ytest ~= testClasses & testClasses == 1);
 falseNegative = find(ytest ~= testClasses & testClasses == -1);
-saveScoreImages(truePositive, scores, namesTest, 'nn-tp');
-saveScoreImages(trueNegative, scores, namesTest, 'nn-tn');
-saveScoreImages(falsePositive, scores, namesTest, 'nn-fp');
-saveScoreImages(falseNegative, scores, namesTest, 'nn-fn');
+saveScoreImages(truePositive, scores, namesTest, 'alex-tp');
+saveScoreImages(trueNegative, scores, namesTest, 'alex-tn');
+saveScoreImages(falsePositive, scores, namesTest, 'alex-fp');
+saveScoreImages(falseNegative, scores, namesTest, 'alex-fn');
 
 % Extract the positive class scores
 positiveScores = scores(:, 2);

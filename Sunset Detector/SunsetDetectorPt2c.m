@@ -18,21 +18,19 @@ dsTest = readDatastore('images/test');
 
 net = googlenet;
 %analyzeNetwork(net);
-fprintf('Done\n');
-
-%%
 
 layer = 'loss3-classifier';
 featuresTrain = activations(net,dsTrain,layer,'OutputAs','rows');
 featuresValidation = activations(net,dsValidation,layer,'OutputAs','rows');
 featuresTest = activations(net,dsTest,layer,'OutputAs','rows');
-save('features2.mat', 'featuresTrain', 'featuresValidation', 'featuresTest');
+save('features2c.mat', 'featuresTrain', 'featuresValidation', 'featuresTest');
 
-load('features2.mat');
+%%
+load('features2c.mat');
 
-ytrain = getY('images\train');
-yvalid = getY('images\validate');
-ytest = getY('images\test');
+[ytrain, namesTrain] = getY('images\train');
+[yvalid, namesValid] = getY('images\validate');
+[ytest, namesTest] = getY('images\test');
 
 C = 10.^(-5:1:10);
 KScale = 10.^(-5:1:10);
@@ -68,7 +66,7 @@ load('datagridpt2c.mat');
 maxAccuracy, index
 
 %%
-load('features2.mat');
+load('features2c.mat');
 %C = 10 000, KScale = 100
 C = 9000:100:11000;
 KScale = 90:110;
@@ -103,11 +101,10 @@ load('datagrid2pt2c.mat');
 maxAccuracy, index
 
 %%
-load('features2.mat');
-ytrain = getY('images\train');
-yvalid = getY('images\validate');
-ytest = getY('images\test');
-namesTest = dsTest.Files;
+load('features2c.mat');
+[ytrain, namesTrain] = getY('images\train');
+[yvalid, namesValid] = getY('images\validate');
+[ytest, namesTest] = getY('images\test');
 
 % Define the best parameters found
 bestC = 9000; % Update as per your hyperparameter tuning
@@ -131,14 +128,14 @@ tic
 [testClasses, scores] = predict(model, featuresTest);
 toc
 
-%truePositive = find(ytest == testClasses & testClasses == 1);
-%trueNegative = find(ytest == testClasses & testClasses == -1);
-%falsePositive = find(ytest ~= testClasses & testClasses == 1);
-%falseNegative = find(ytest ~= testClasses & testClasses == -1);
-%saveScoreImages(truePositive, scores, namesTest, 'tp');
-%saveScoreImages(trueNegative, scores, namesTest, 'tn');
-%saveScoreImages(falsePositive, scores, namesTest, 'fp');
-%saveScoreImages(falseNegative, scores, namesTest, 'fn');
+truePositive = find(ytest == testClasses & testClasses == 1);
+trueNegative = find(ytest == testClasses & testClasses == -1);
+falsePositive = find(ytest ~= testClasses & testClasses == 1);
+falseNegative = find(ytest ~= testClasses & testClasses == -1);
+saveScoreImages(truePositive, scores, namesTest, 'google-tp');
+saveScoreImages(trueNegative, scores, namesTest, 'google-tn');
+saveScoreImages(falsePositive, scores, namesTest, 'google-fp');
+saveScoreImages(falseNegative, scores, namesTest, 'google-fn');
 
 % Extract the positive class scores
 positiveScores = scores(:, 2);
